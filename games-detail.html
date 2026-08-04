@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Games | Rahul Jetwani</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #111418;
+            --surface: #1D1F23;
+            --text-primary: #E6E6E6;
+            --text-secondary: #A9A9B3;
+            --accent1: #F9A826;
+            --accent2: #679186;
+            --border: #2A2E35;
+            --font-header: "Space Grotesk", sans-serif;
+            --font-body: "Inter", sans-serif;
+            --font-mono: "JetBrains Mono", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow: hidden
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(29,31,35,0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 18px 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+            header a {
+                color: var(--text-primary);
+                text-decoration: none;
+                font-family: var(--font-header);
+                font-weight: 600;
+                font-size: 17px;
+                letter-spacing: 0.2px;
+                transition: color .18s;
+            }
+
+                header a:hover {
+                    color: var(--accent1)
+                }
+
+        /* ---------- Games scroll wrapper ---------- */
+        .games-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+
+            .games-wrapper::-webkit-scrollbar {
+                display: none
+            }
+
+        .game {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3.5rem;
+            padding: 6.5rem 3.5rem 2.5rem;
+        }
+
+            .game:nth-child(even) {
+                flex-direction: row-reverse
+            }
+
+        /* Slideshow — smaller square */
+        .slideshow {
+            flex: 0 0 auto;
+            width: min(34vw, 360px);
+            aspect-ratio: 1/1;
+            background: var(--surface);
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+            .slideshow img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0;
+                transition: opacity .6s ease;
+            }
+
+                .slideshow img.active {
+                    opacity: 1
+                }
+
+        /* Text side */
+        .game-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            max-width: 620px;
+        }
+
+            .game-text h3 {
+                font-size: 1.8rem;
+                margin-bottom: .6rem;
+                color: var(--accent1);
+                font-family: var(--font-header);
+            }
+
+            .game-text .tagline {
+                color: var(--text-secondary);
+                line-height: 1.5;
+                margin-bottom: .9rem;
+                font-size: .95rem;
+            }
+
+            .game-text .journey {
+                color: var(--text-secondary);
+                line-height: 1.55;
+                margin-bottom: 1.1rem;
+                font-size: .87rem;
+            }
+
+                .game-text .journey p {
+                    margin-bottom: .7rem
+                }
+
+                    .game-text .journey p:last-child {
+                        margin-bottom: 0
+                    }
+
+        .tool-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-bottom: 1.1rem
+        }
+
+        .tool-tag {
+            padding: .35rem .75rem;
+            background: rgba(249,168,38,0.15);
+            color: var(--accent1);
+            border-radius: 6px;
+            font-size: .75rem;
+            font-family: var(--font-mono);
+            border: 1px solid rgba(249,168,38,0.3);
+        }
+
+        .nda-note {
+            color: var(--text-secondary);
+            font-size: .8rem;
+            font-style: italic;
+            margin-bottom: .9rem;
+            opacity: .8;
+        }
+
+        .ref-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            background: rgba(17,20,24,0.8);
+            border: 1px solid rgba(249,168,38,0.4);
+            color: var(--accent1);
+            font-family: var(--font-mono);
+            font-size: .65rem;
+            padding: .3rem .6rem;
+            border-radius: 20px;
+            letter-spacing: .3px;
+        }
+
+        .btn {
+            padding: .7rem 1.4rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: var(--font-header);
+            cursor: pointer;
+            transition: all .25s;
+            font-size: .9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent1);
+            color: #111418
+        }
+
+            .btn-primary:hover {
+                background: var(--accent2);
+                color: #fff
+            }
+
+        /* ---------- Indicator (dots + counter) ---------- */
+        .indicator-wrap {
+            position: fixed;
+            right: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            z-index: 1200;
+        }
+
+        .indicator-count {
+            font-family: var(--font-mono);
+            font-size: .78rem;
+            color: var(--accent1);
+            letter-spacing: .5px;
+        }
+
+        .indicator {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            transition: all .25s;
+            cursor: pointer
+        }
+
+            .dot:hover {
+                transform: scale(1.15);
+                background: var(--accent2)
+            }
+
+            .dot.active {
+                background: var(--accent1);
+                transform: scale(1.2)
+            }
+
+        /* ---------- Persistent "more below" hint ---------- */
+        .scroll-hint {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .3rem;
+            z-index: 1200;
+            color: var(--text-secondary);
+            font-size: .8rem;
+            font-family: var(--font-mono);
+            opacity: 1;
+            transition: opacity .4s ease;
+            pointer-events: none;
+        }
+
+            .scroll-hint.hidden {
+                opacity: 0
+            }
+
+            .scroll-hint .chevron {
+                color: var(--accent1);
+                font-size: 1rem;
+                animation: bounce 1.6s infinite;
+            }
+
+        @keyframes bounce {
+            0%,100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(5px)
+            }
+        }
+
+        /* Responsive */
+        @media (max-width:900px) {
+            .game {
+                flex-direction: column;
+                padding: 6rem 1.5rem 2rem;
+                gap: 1.2rem
+            }
+
+                .game:nth-child(even) {
+                    flex-direction: column
+                }
+
+            .slideshow {
+                width: 56vw;
+                max-width: 280px
+            }
+
+            .game-text {
+                max-width: 100%;
+                align-items: center;
+                text-align: center
+            }
+
+            .indicator-wrap {
+                right: 10px;
+                gap: 8px
+            }
+
+            .dot {
+                width: 9px;
+                height: 9px
+            }
+
+            .scroll-hint {
+                font-size: .72rem;
+                bottom: 12px
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <a href="index.html#home">Home</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#about">About</a>
+    </header>
+
+    <div class="games-wrapper" id="gamesWrapper">
+
+        <!-- GAME 1: Nightmares of the Creepy Cube -->
+        <section class="game">
+            <div class="slideshow" data-index="0">
+                <img src="assets/nftcc.png" alt="Nightmares of the Creepy Cube 1" class="active">
+                <img src="assets/nftccaa.png" alt="Nightmares of the Creepy Cube 2">
+                <img src="assets/nftccaaa.png" alt="Nightmares of the Creepy Cube 3">
+            </div>
+
+            <div class="game-text">
+                <h3>Nightmares of the Creepy Cube</h3>
+                <p class="tagline">
+                    A 2D stealth-survival platformer where you play as a small cube escaping a nightmare world
+                    of hostile robots. I handled all programming, VFX, and music solo, focusing on tight
+                    movement and early level design.
+                </p>
+                <div class="journey">
+                    <p>
+                        The idea came after seeing <em>Sqube Darkness</em> on mobile — I wanted that same dark,
+                        moody tone but with deeper mechanics: motion-reactive enemies, destructible terrain, and
+                        stealth that rewards patience. It's built around three pillars — procedural generation,
+                        AI-driven hazards, and dynamic terrain destruction — all sharing one ground system in
+                        real time.
+                    </p>
+                    <p>
+                        The Ground Generator uses Unity's Tilemap API to build terrain ahead of the player, tuned
+                        for randomness but constrained so no jump is impossible. Termites chase and self-destruct
+                        into the terrain; drones sweep the map with a vision-cone and fire homing missiles that
+                        carve holes on impact. PC controls and both enemy types are fully working — a handcrafted
+                        level mode and better onboarding are next.
+                    </p>
+                </div>
+                <div class="tool-tags">
+                    <span class="tool-tag">Unity Engine</span>
+                    <span class="tool-tag">C#</span>
+                    <span class="tool-tag">Photoshop</span>
+                    <span class="tool-tag">FL Studio</span>
+                    <span class="tool-tag">Audacity</span>
+                </div>
+                <a class="btn btn-primary" href="#" target="_blank">Itch.io Page</a>
+            </div>
+        </section>
+
+        <!-- GAME 4: Multiplayer Co-op Game (Internship) -->
+        <section class="game">
+            <div class="slideshow" data-index="3">
+                <div class="ref-badge">AI-generated reference</div>
+                <img src="assets/multiplayer.png" alt="Multiplayer Co-op Game reference art" class="active">
+            </div>
+
+            <div class="game-text">
+                <h3>Multiplayer Co-op Game</h3>
+                <p class="tagline">
+                    Built during my internship — a networked co-op title where I worked on
+                    gameplay systems and synchronized player state so partners see a consistent, responsive
+                    world together.
+                </p>
+                <div class="journey">
+                    <p>
+                        This was the internship's flagship project, and my first hands-on exposure to multiplayer
+                        architecture in a production setting. I joined an established studio pipeline — version
+                        control, code review, and design handoff — translating design specs into working systems on a fixed schedule across two
+                        concurrent titles.
+                    </p>
+                    <p>
+                        I also picked up Unity shader authoring on the job to support in-game VFX, a skill I later
+                        expanded into a personal shader collection. Specific gameplay and mechanics are under
+                        NDA, so I can't go into detail here — but the tech stack and general focus areas are below.
+                    </p>
+                </div>
+                <p class="nda-note">Details covered under NDA — happy to discuss the general approach in an interview.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Unity Engine</span>
+                    <span class="tool-tag">Photon Fusion 2</span>
+                    <span class="tool-tag">C#</span>
+                    <span class="tool-tag">Unity Shader Graph</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME 2: Eyes on Duty -->
+        <section class="game">
+            <div class="slideshow" data-index="1">
+                <img src="assets/eod01.jpg" alt="Eyes on Duty 1" class="active">
+                <img src="assets/eod02.PNG" alt="Eyes on Duty 2">
+                <img src="assets/eod03.PNG" alt="Eyes on Duty 3">
+            </div>
+
+            <div class="game-text">
+                <h3>Eyes on Duty</h3>
+                <p class="tagline">
+                    A mobile horror observation game inspired by the <em>I'm on Observation Duty</em> series —
+                    monitor camera feeds in a haunted restaurant and report anomalies before they spiral. I
+                    built the anomaly engine, camera system, and UI flow, all optimized for touch.
+                </p>
+                <div class="journey">
+                    <p>
+                        This was my first full mobile project — turning a simple idea into something complete
+                        and polished. The plan started simple, but I quickly focused on the systems underneath:
+                        unpredictable spawns, multiple anomaly types, and a difficulty curve that ramps naturally
+                        over a shift.
+                    </p>
+                    <p>
+                        The AnomalyManager controls what spawns, where, and when, with each camera holding its own
+                        configuration. The AnomalyReportingSystem lets players pick a camera, choose a report
+                        type, and get instant feedback — all tuned for mobile with touch controls, balanced audio,
+                        and a light memory footprint. It works well as a proof of concept, with room to grow: more
+                        anomaly variety, livelier pacing, and subtler visual cues for sharp-eyed players.
+                    </p>
+                </div>
+                <div class="tool-tags">
+                    <span class="tool-tag">Unity Engine</span>
+                    <span class="tool-tag">C#</span>
+                    <span class="tool-tag">Blender</span>
+                    <span class="tool-tag">Photoshop</span>
+                    <span class="tool-tag">Audacity</span>
+                </div>
+                <a class="btn btn-primary" href="#" target="_blank">Itch.io Page</a>
+            </div>
+        </section>
+
+        <!-- GAME 5: Top-Down Shooter (Internship) -->
+        <section class="game">
+            <div class="slideshow" data-index="4">
+                <div class="ref-badge">AI-generated reference</div>
+                <img src="assets/topdown.png" alt="Top-Down Shooter reference art" class="active">
+            </div>
+
+            <div class="game-text">
+                <h3>Top-Down Shooter</h3>
+                <p class="tagline">
+                    Also built during my internship — a standard mobile Unity top-down shooter, taken from prototype through to a
+                    quality build, with a strong focus on gameplay feel, responsiveness, and overall polish.
+                </p>
+                <div class="journey">
+                    <p>
+                        Unlike the co-op project, this followed a traditional single-player Unity pipeline with no networking layer.
+                        The primary focus was on tight core gameplay, responsive controls, visual feedback,
+                        and optimizing performance for smooth play on mid-range mobile devices.
+                    </p>
+                    <p>
+                        This project gave me hands-on experience building and refining a complete mobile gameplay experience
+                        while working within the technical constraints of mobile hardware. As with the co-op project, specific mechanics and
+                        content are under NDA, so this is a high-level overview.
+                    </p>
+                </div>
+                <p class="nda-note">Details covered under NDA — happy to discuss the general approach in an interview.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Unity Engine</span>
+                    <span class="tool-tag">C#</span>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- GAME 3: Taxi Chaos -->
+        <section class="game">
+            <div class="slideshow" data-index="2">
+                <img src="assets/tc01.jpg" alt="Taxi Chaos 1" class="active">
+                <img src="assets/tc02.PNG" alt="Taxi Chaos 2">
+                <img src="assets/tc03.PNG" alt="Taxi Chaos 3">
+            </div>
+
+            <div class="game-text">
+                <h3>Taxi Chaos</h3>
+                <p class="tagline">
+                    A 3D arcade-style taxi simulator in a low-poly open world — pick up NPC passengers, race
+                    them to their destination, and bank cash for speed and clean driving. I built every system
+                    from scratch: physics, AI traffic, missions, and rewards.
+                </p>
+                <div class="journey">
+                    <p>
+                        Arcade racers get pure adrenaline out of minimal mechanics — just you, the car, and a
+                        clock. Taxi Chaos mashes up <em>Crazy Taxi's</em> urgency with lightweight simulation: a
+                        low-poly city where AI traffic, pedestrians, and missions all coexist, scoped around
+                        responsive physics, AI pathing, a pickup/delivery loop, and rewards tied to speed and
+                        safety.
+                    </p>
+                    <p>
+                        Vehicle control was rebuilt from scratch with separate input, motor, steering, and
+                        anti-roll scripts, tuned over many test drives. Instead of heavy NavMesh agents, AI
+                        traffic runs on a lightweight waypoint system so hundreds of cars run smoothly even on
+                        mid-tier hardware. AI still collides at intersections sometimes, and handling needs more
+                        nuance at speed — lane-switching, drift tuning, and a mobile release are next.
+                    </p>
+                </div>
+                <div class="tool-tags">
+                    <span class="tool-tag">Unity Engine</span>
+                    <span class="tool-tag">C#</span>
+                    <span class="tool-tag">Blender</span>
+                    <span class="tool-tag">Photoshop</span>
+                    <span class="tool-tag">Audacity</span>
+                </div>
+                <a class="btn btn-primary" href="#" target="_blank">Itch.io Page</a>
+            </div>
+        </section>
+    </div>
+
+
+        
+
+    <!-- indicator dots + counter -->
+    <div class="indicator-wrap">
+        <div class="indicator-count" id="indicatorCount">1 / 5</div>
+        <div class="indicator" id="indicator">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <!-- persistent scroll hint -->
+    <div class="scroll-hint" id="scrollHint">
+        <span>More games below</span>
+        <span class="chevron">▼</span>
+    </div>
+
+    <script>
+        const gamesWrapper = document.getElementById('gamesWrapper');
+        const gameSections = Array.from(gamesWrapper.querySelectorAll('.game'));
+        const dots = Array.from(document.querySelectorAll('.dot'));
+        const scrollHint = document.getElementById('scrollHint');
+        const indicatorCount = document.getElementById('indicatorCount');
+        let currentIndex = 0;
+        let isScrolling = false;
+        let scrollTimeout;
+
+        function updateDots(i) {
+            dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+            indicatorCount.textContent = `${i + 1} / ${gameSections.length}`;
+            // Hide the "more below" hint once on the last game
+            scrollHint.classList.toggle('hidden', i === gameSections.length - 1);
+        }
+
+        function goToGame(i, instant = false) {
+            if (i < 0) i = 0;
+            if (i >= gameSections.length) i = gameSections.length - 1;
+            currentIndex = i;
+            const top = gameSections[i].offsetTop;
+            gamesWrapper.scrollTo({ top, behavior: instant ? 'auto' : 'smooth' });
+            updateDots(i);
+        }
+
+        // Wheel navigation
+        gamesWrapper.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (isScrolling) return;
+
+            const delta = e.deltaY;
+            if (Math.abs(delta) > 5) {
+                isScrolling = true;
+                if (delta > 0 && currentIndex < gameSections.length - 1) {
+                    goToGame(currentIndex + 1);
+                } else if (delta < 0 && currentIndex > 0) {
+                    goToGame(currentIndex - 1);
+                }
+                setTimeout(() => { isScrolling = false; }, 800);
+            }
+        }, { passive: false });
+
+        // Arrow keys
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (currentIndex < gameSections.length - 1) goToGame(currentIndex + 1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentIndex > 0) goToGame(currentIndex - 1);
+            }
+        });
+
+        // Touch swipe
+        let touchStartY = null;
+        let touchStartTime = null;
+        gamesWrapper.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+        }, { passive: true });
+
+        gamesWrapper.addEventListener('touchend', (e) => {
+            if (touchStartY === null || isScrolling) return;
+            const endY = e.changedTouches[0].clientY;
+            const deltaY = touchStartY - endY;
+            const deltaTime = Date.now() - touchStartTime;
+
+            if (Math.abs(deltaY) > 50 && deltaTime < 300) {
+                isScrolling = true;
+                if (deltaY > 0 && currentIndex < gameSections.length - 1) {
+                    goToGame(currentIndex + 1);
+                } else if (deltaY < 0 && currentIndex > 0) {
+                    goToGame(currentIndex - 1);
+                }
+                setTimeout(() => { isScrolling = false; }, 800);
+            }
+            touchStartY = null;
+            touchStartTime = null;
+        }, { passive: true });
+
+        // Track manual scroll
+        gamesWrapper.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                let nearest = 0;
+                let nearestDist = Infinity;
+                gameSections.forEach((s, idx) => {
+                    const dist = Math.abs(s.getBoundingClientRect().top);
+                    if (dist < nearestDist) { nearestDist = dist; nearest = idx; }
+                });
+                if (nearest !== currentIndex) {
+                    currentIndex = nearest;
+                    updateDots(currentIndex);
+                }
+            }, 100);
+        });
+
+        // Dot clicks
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                if (!isScrolling) goToGame(idx);
+            });
+        });
+
+        // Slideshows
+        const slideshows = Array.from(document.querySelectorAll('.slideshow'));
+        const slideshowState = [];
+        slideshows.forEach((box, i) => {
+            const imgs = Array.from(box.querySelectorAll('img'));
+            slideshowState[i] = { imgs, current: 0, timer: null };
+            imgs.forEach((im, idx) => im.classList.toggle('active', idx === 0));
+            slideshowState[i].timer = setInterval(() => {
+                const st = slideshowState[i];
+                st.imgs[st.current].classList.remove('active');
+                st.current = (st.current + 1) % st.imgs.length;
+                st.imgs[st.current].classList.add('active');
+            }, 4000);
+        });
+
+        goToGame(0, true);
+    </script>
+</body>
+</html>

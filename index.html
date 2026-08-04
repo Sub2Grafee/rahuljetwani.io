@@ -1,403 +1,752 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Rahul Jetwani | Portfolio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Rahul Jetwani | Portfolio</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#111418;
-      --surface:#1D1F23;
-      --text-primary:#E6E6E6;
-      --text-secondary:#A9A9B3;
-      --accent1:#F9A826;
-      --accent2:#679186;
-      --border:#2A2E35;
-      --font-header: "Space Grotesk", sans-serif;
-      --font-body: "Inter", sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-    }
+    <style>
+        :root {
+            --bg: #111418;
+            --surface: #1D1F23;
+            --text-primary: #E6E6E6;
+            --text-secondary: #A9A9B3;
+            --accent1: #F9A826;
+            --accent2: #679186;
+            --border: #2A2E35;
+            --font-header: "Space Grotesk", sans-serif;
+            --font-body: "Inter", sans-serif;
+            --font-mono: "JetBrains Mono", monospace;
+        }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;width:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body);overflow:hidden}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
 
-    /* Header - full width bar, items spaced evenly */
-    header{
-      position:fixed;top:0;left:0;width:100%;
-      background:rgba(29,31,35,0.85);backdrop-filter:blur(10px);
-      display:flex;justify-content:space-around;align-items:center;
-      padding:18px 0;z-index:1000;border-bottom:1px solid var(--border);
-    }
-    header a{
-      color:var(--text-primary);text-decoration:none;font-family:var(--font-header);
-      font-weight:600;font-size:17px;letter-spacing:0.2px;transition:color .18s;
-    }
-    header a:hover{color:var(--accent1)}
+        html, body {
+            height: 100%;
+            width: 100%;
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            overflow: hidden
+        }
 
-    /* Page wrapper: show/hide pages */
-    .page{display:none;width:100%;height:100vh;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative}
-    .page.active{display:flex}
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(29,31,35,0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 18px 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
 
-    /* ---------- HOME / INTRO ---------- */
-    .intro{flex-direction:column}
-    .intro h1{font-family:var(--font-header);font-size:2.8rem;color:var(--accent1);margin-bottom:.5rem;}
-    .intro h2{font-family:var(--font-header);font-size:1.6rem;color:var(--accent2);margin:1rem 0;}
-    .intro p{max-width:720px;color:var(--text-secondary);margin-bottom:1.6rem;line-height:1.6}
+            header a {
+                color: var(--text-primary);
+                text-decoration: none;
+                font-family: var(--font-header);
+                font-weight: 600;
+                font-size: 17px;
+                letter-spacing: 0.2px;
+                transition: color .18s;
+                cursor: pointer;
+            }
 
-    .btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
-    .btn{padding:.85rem 1.6rem;border-radius:8px;text-decoration:none;font-weight:600;font-family:var(--font-header);cursor:pointer;transition:all .25s}
-    .btn-primary{background:var(--accent1);color:#111418}
-    .btn-primary:hover{background:var(--accent2);color:#fff}
-    .btn-outline{border:2px solid var(--accent1);color:var(--accent1);background:transparent}
-    .btn-outline:hover{border-color:var(--accent2);color:var(--accent2)}
+                header a:hover, header a.active {
+                    color: var(--accent1)
+                }
 
-    /* ---------- Projects (scroll area) ---------- */
-    .projects-page{display:flex;flex-direction:column;width:100%;height:100%;overflow:hidden}
-    .projects-wrapper{
-      width:100%;height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;
-      -ms-overflow-style:none;scrollbar-width:none;position:relative;
-      scroll-behavior:smooth;
-    }
-    .projects-wrapper::-webkit-scrollbar{display:none}
+        /* ---------- Sections wrapper (scroll-snap between Home/Projects/About) ---------- */
+        .sections-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
 
-    .project{
-      width:100%;height:100vh;scroll-snap-align:start;scroll-snap-stop:always;
-      display:flex;align-items:center;justify-content:center;gap:2.5rem;padding:3.5rem;
-    }
-    /* alternate layout (image left/text right) and reverse */
-    .project:nth-child(even){flex-direction:row-reverse}
+            .sections-wrapper::-webkit-scrollbar {
+                display: none
+            }
 
-    /* slideshow area */
-    .slideshow{
-      flex:1;background:var(--surface);border-radius:12px;height:70%;
-      position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;
-    }
-    .slideshow img{
-      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease;
-    }
-    .slideshow img.active{opacity:1}
+        .section {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 2rem 2rem;
+            position: relative;
+        }
 
-    /* small caption overlay (optional) */
-    .slideshow .caption{
-      position:absolute;left:14px;bottom:12px;background:rgba(0,0,0,0.45);padding:.35rem .6rem;border-radius:6px;
-      color:var(--text-primary);font-size:.85rem;font-family:var(--font-mono)
-    }
+        /* ---------- HOME ---------- */
+        .home-section {
+            text-align: center
+        }
 
-    /* project text stacked vertically */
-    .project-text{flex:1;display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:1rem 0}
-    .project-text h3{font-size:2rem;margin-bottom:1rem;color:var(--accent1);font-family:var(--font-header)}
-    .project-text p{color:var(--text-secondary);margin-bottom:1.25rem;max-width:560px;line-height:1.55}
-    .project-text .btn{margin-top:8px}
+            .home-section h1 {
+                font-family: var(--font-header);
+                font-size: 2.8rem;
+                color: var(--accent1);
+                margin-bottom: .5rem
+            }
 
-    /* indicator dots on the right - only visible in projects */
-    .indicator{
-      position:fixed;right:20px;top:50%;transform:translateY(-50%);
-      display:flex;flex-direction:column;gap:12px;z-index:1200;
-      opacity:0;visibility:hidden;transition:opacity .3s, visibility .3s;
-    }
-    .indicator.visible{opacity:1;visibility:visible}
-    .dot{width:12px;height:12px;border-radius:50%;background:var(--text-secondary);transition:all .25s;cursor:pointer}
-    .dot:hover{transform:scale(1.15);background:var(--accent2)}
-    .dot.active{background:var(--accent1);transform:scale(1.2)}
+            .home-section h2 {
+                font-family: var(--font-header);
+                font-size: 1.6rem;
+                color: var(--accent2);
+                margin: 1rem 0;
+                font-weight: 400
+            }
 
-    /* responsive */
-    @media (max-width:900px){
-      .project{flex-direction:column;padding:2rem}
-      .project:nth-child(even){flex-direction:column}
-      .slideshow{width:90%;height:45%}
-      .project-text{width:90%;padding-top:1.25rem;align-items:center;text-align:center}
-      .project-text h3{text-align:center}
-      .indicator{right:10px;gap:10px}
-      .dot{width:10px;height:10px}
-    }
-  </style>
+            .home-section p {
+                max-width: 730px;
+                color: var(--text-secondary);
+                margin-bottom: 1.6rem;
+                line-height: 1.6
+            }
+
+        .btns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+
+        .btn {
+            padding: .85rem 1.6rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: var(--font-header);
+            cursor: pointer;
+            transition: all .25s
+        }
+
+        .btn-primary {
+            background: var(--accent1);
+            color: #111418
+        }
+
+            .btn-primary:hover {
+                background: var(--accent2);
+                color: #fff
+            }
+
+        .btn-outline {
+            border: 2px solid var(--accent1);
+            color: var(--accent1);
+            background: transparent
+        }
+
+            .btn-outline:hover {
+                border-color: var(--accent2);
+                color: var(--accent2)
+            }
+
+        /* ---------- PROJECTS (Bento) ---------- */
+        .projects-section {
+            align-items: stretch;
+            justify-content: flex-start
+        }
+
+        .projects-heading {
+            text-align: center;
+            margin-bottom: 2rem
+        }
+
+            .projects-heading h2 {
+                font-family: var(--font-header);
+                font-size: 2.2rem;
+                color: var(--accent1)
+            }
+
+            .projects-heading p {
+                color: var(--text-secondary);
+                margin-top: .5rem
+            }
+
+        .bento-grid {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1.5rem;
+            min-height: 0;
+        }
+
+        .bento-card {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            background-size: cover;
+            background-position: center;
+            transition: transform .35s ease, box-shadow .35s ease;
+        }
+
+            .bento-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+            }
+
+            .bento-card.big {
+                grid-column: 1;
+                grid-row: 1 / 3
+            }
+
+            .bento-card.small-a {
+                grid-column: 2;
+                grid-row: 1
+            }
+
+            .bento-card.small-b {
+                grid-column: 2;
+                grid-row: 2
+            }
+
+            .bento-card:before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to top, rgba(17,20,24,0.95) 10%, rgba(17,20,24,0.55) 55%, rgba(17,20,24,0.15) 100%);
+                transition: background .3s ease;
+            }
+
+            .bento-card:hover:before {
+                background: linear-gradient(to top, rgba(17,20,24,0.97) 15%, rgba(17,20,24,0.7) 60%, rgba(17,20,24,0.25) 100%);
+            }
+
+        .bento-content {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1.5rem;
+            z-index: 2;
+        }
+
+        .bento-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-bottom: .7rem
+        }
+
+        .bento-tag {
+            padding: .3rem .7rem;
+            background: rgba(249,168,38,0.15);
+            color: var(--accent1);
+            border-radius: 6px;
+            font-size: .75rem;
+            font-family: var(--font-mono);
+            border: 1px solid rgba(249,168,38,0.3);
+        }
+
+        .bento-card.big .bento-content h3 {
+            font-size: 1.8rem
+        }
+
+        .bento-content h3 {
+            font-family: var(--font-header);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: .5rem;
+        }
+
+        .bento-content p {
+            color: var(--text-secondary);
+            font-size: .9rem;
+            line-height: 1.5;
+            max-width: 520px;
+        }
+
+        .bento-arrow {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(249,168,38,0.15);
+            border: 1px solid rgba(249,168,38,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent1);
+            font-size: 1.1rem;
+            z-index: 2;
+            transition: background .25s, transform .25s;
+        }
+
+        .bento-card:hover .bento-arrow {
+            background: var(--accent1);
+            color: #111418;
+            transform: rotate(45deg)
+        }
+
+        /* ---------- ABOUT ---------- */
+        .about-section {
+            overflow-y: auto
+        }
+
+        .about-content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2.2rem
+        }
+
+        .profile-photo {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            border: 4px solid var(--accent1);
+            object-fit: cover;
+            margin-bottom: 1.1rem;
+            box-shadow: 0 8px 24px rgba(249,168,38,0.2);
+            transition: transform .3s, box-shadow .3s;
+        }
+
+            .profile-photo:hover {
+                transform: scale(1.05);
+                box-shadow: 0 12px 32px rgba(249,168,38,0.3)
+            }
+
+        .profile-section h1 {
+            font-size: 2rem;
+            color: var(--accent1);
+            font-family: var(--font-header);
+            margin-bottom: .6rem
+        }
+
+        .about-line {
+            max-width: 680px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin: 0 auto .9rem;
+            font-size: .98rem
+        }
+
+        .email-display {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .6rem 1.2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--accent1);
+            font-family: var(--font-mono);
+            font-size: .9rem;
+            margin-top: .3rem;
+            transition: all .25s;
+        }
+
+            .email-display:hover {
+                border-color: var(--accent1);
+                box-shadow: 0 4px 12px rgba(249,168,38,0.15)
+            }
+
+        /* Skills */
+        .skills-section {
+            width: 100%;
+            max-width: 820px;
+            margin-top: .5rem
+        }
+
+        .skills {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+            gap: 1rem 1.5rem;
+        }
+
+        .skill {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            padding: .8rem .5rem;
+            transition: transform .2s, background .2s;
+        }
+
+            .skill:hover {
+                transform: translateY(-3px);
+                background: rgba(255,255,255,0.05)
+            }
+
+        .skill-name {
+            font-size: .88rem;
+            color: var(--text-primary);
+            margin-bottom: .3rem;
+            font-family: var(--font-header)
+        }
+
+        .stars {
+            color: var(--accent1);
+            font-size: .9rem;
+            letter-spacing: 1px;
+            animation: glow 3s ease-in-out infinite alternate
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 3px rgba(249,168,38,0.5)
+            }
+
+            to {
+                text-shadow: 0 0 8px rgba(249,168,38,0.8)
+            }
+        }
+
+        /* ---------- Section indicator dots ---------- */
+        .indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1200;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            transition: all .25s;
+            cursor: pointer
+        }
+
+            .dot:hover {
+                transform: scale(1.15);
+                background: var(--accent2)
+            }
+
+            .dot.active {
+                background: var(--accent1);
+                transform: scale(1.2)
+            }
+
+        /* Responsive */
+        @media (max-width:900px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: none;
+                gap: 1rem;
+                height: auto
+            }
+
+            .bento-card.big, .bento-card.small-a, .bento-card.small-b {
+                grid-column: 1;
+                grid-row: auto;
+                min-height: 260px
+            }
+
+            .about-section {
+                padding-top: 90px
+            }
+
+            .profile-photo {
+                width: 140px;
+                height: 140px
+            }
+
+            .profile-section h1 {
+                font-size: 1.8rem
+            }
+
+            .indicator {
+                right: 10px;
+                gap: 10px
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- HEADER (always visible) -->
-  <header>
-    <a href="#" data-target="intro">Home</a>
-    <a href="#" data-target="projects">Projects</a>
-    <a href="about.html">About</a>
-  </header>
+    <!-- HEADER (always visible) -->
+    <header>
+        <a data-target="home">Home</a>
+        <a data-target="projects">Projects</a>
+        <a data-target="about">About</a>
+    </header>
 
-  <!-- HOME / INTRO PAGE -->
-  <main id="intro" class="page active intro">
-    <div>
-      <h1>Rahul Jetwani</h1>
-      <h2>Game Developer / Unity Programmer</h2>
-      <p>
-        Hi, I'm Rahul. I love playing games and enjoy building them even more. I’m an engineering student who has been programming games for over 3 years, and I’m open to internship or collaboration opportunities.
-      </p>
+    <div class="sections-wrapper" id="sectionsWrapper">
 
-      <div class="btns">
-        <a class="btn btn-primary" href="https://drive.usercontent.google.com/u/0/uc?id=1_cIyNzE28oSvNnb3NNfoxxBCSHSb6h1p&export=download">Resume</a>
-        <a class="btn btn-outline" href="mailto:rahuljetwani777@email.com">Email</a>
-        <a class="btn btn-outline" href="https://in.linkedin.com/in/rahul-jetwani-655105244">LinkedIn</a>
-        <a class="btn btn-outline" href="https://grafee.itch.io/">Itch.io</a>
-        <a class="btn btn-outline" href="https://www.instagram.com/raahwul.exe/?hl=en">Instagram</a>
-      </div>
+        <!-- ================= HOME ================= -->
+        <section id="home" class="section home-section">
+            <div>
+                <h1>Rahul Jetwani</h1>
+                <h2>Game Developer & Real-Time Graphics Programmer</h2>
+                <p>
+                    Building games, exploring graphics and always curious about how things work under the hood.
+                </p>
+
+                <div class="btns">
+                    <a class="btn btn-primary" href="https://drive.google.com/uc?export=download&id=1vriE-DsxFZOhxtr15PjmKcRiBx1fMJbU" download>Resume</a>
+                    <a class="btn btn-outline" href="mailto:rahuljetwani777@gmail.com">Email</a>
+                    <a class="btn btn-outline" href="https://www.linkedin.com/in/rahul-jetwani-655105244/">LinkedIn</a>
+                    <a class="btn btn-outline" href="https://grafee.itch.io/">Itch.io</a>
+                    <a class="btn btn-outline" href="https://github.com/rahuljetwani">GitHub</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROJECTS (Bento) ================= -->
+        <section id="projects" class="section projects-section">
+            <div class="projects-heading">
+                <h2>My Work</h2>
+                <p>A mix of gameplay systems, low-level graphics R&D, and procedural VFX.</p>
+            </div>
+
+            <div class="bento-grid">
+                <!-- BIG CARD: OpenGL Renderer -->
+                <a class="bento-card big" href="renderer-detail.html" style="background-image: url('assets/triangle.jpg')">
+                    <div class="bento-arrow">↗</div>
+                    <div class="bento-content">
+                        <div class="bento-tags">
+                            <span class="bento-tag">C++</span>
+                            <span class="bento-tag">OpenGL</span>
+                            <span class="bento-tag">GLSL</span>
+                        </div>
+                        <h3>OpenGL Renderer</h3>
+                    </div>
+                </a>
+
+                <!-- SMALL CARD: Games -->
+                <a class="bento-card small-a" href="games-detail.html" style="background-image: url('assets/tc02.PNG') ">
+                    <div class="bento-arrow">↗</div>
+                    <div class="bento-content">
+                        <div class="bento-tags">
+                            <span class="bento-tag">Unity</span>
+                            <span class="bento-tag">C#</span>
+                        </div>
+                        <h3>Games</h3>
+                    </div>
+                </a>
+
+                <!-- SMALL CARD: Unity Shaders -->
+                <a class="bento-card small-b" href="shaders-detail.html" style="background-image: url('assets/shader.jpg')">
+                    <div class="bento-arrow">↗</div>
+                    <div class="bento-content">
+                        <div class="bento-tags">
+                            <span class="bento-tag">Shader Graph</span>
+                            <span class="bento-tag">HLSL</span>
+                        </div>
+                        <h3>Unity Shaders</h3>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ================= ABOUT ================= -->
+        <section id="about" class="section about-section">
+            <div class="about-content">
+                <div class="profile-section">
+                    <img src="assets/new5.jpg" alt="Rahul Jetwani" class="profile-photo">
+                    <h1>Rahul Jetwani</h1>
+                    <p class="about-line">
+                        Building interactive worlds through code, real-time graphics, and simulation. games as more than entertainment - 
+                        they're a way for people to explore, create, and experience something different. Always learning. Always building. Always chasing the next challenge.
+                    </p>
+                    <div class="email-display">📧 rahuljetwani777@gmail.com</div>
+                </div>
+
+                <div class="skills-section">
+                    <div class="skills">
+                        <div class="skill"><div class="skill-name">Unity Engine</div><div class="stars">★★★★★</div></div>
+                        <div class="skill"><div class="skill-name">C# Programming</div><div class="stars">★★★★★</div></div>
+                        <div class="skill"><div class="skill-name">C++</div><div class="stars">★★★★☆</div></div>
+                        <div class="skill"><div class="skill-name">OpenGL / GLSL</div><div class="stars">★★★★☆</div></div>
+
+                        <div class="skill"><div class="skill-name">Shader Graph / HLSL</div><div class="stars">★★★★☆</div></div>
+                        <div class="skill"><div class="skill-name">Unreal Engine</div><div class="stars">★★★☆☆</div></div>
+                        <div class="skill"><div class="skill-name">Blender</div><div class="stars">★★★☆☆</div></div>
+                        <div class="skill"><div class="skill-name">Photoshop</div><div class="stars">★★★★☆</div></div>
+
+                        <div class="skill"><div class="skill-name">Premiere Pro</div><div class="stars">★★★☆☆</div></div>
+                        <div class="skill"><div class="skill-name">Git / Version Control</div><div class="stars">★★★★☆</div></div>
+                        <div class="skill"><div class="skill-name">Team Collaboration</div><div class="stars">★★★★☆</div></div>
+                        <div class="skill"><div class="skill-name">Problem Solving</div><div class="stars">★★★★★</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
-  </main>
 
-  <!-- PROJECTS PAGE (fullscreen scrollable area) -->
-  <div id="projects" class="page projects-page" aria-hidden="true">
-    <div class="projects-wrapper" id="projectsWrapper">
-      <!-- Project 1 -->
-      <section class="project">
-        <div class="slideshow" data-index="0">
-          <img src="assets/nftcc.png" alt="Game1 screenshot 1" class="active">
-          <img src="assets/nftccaa.png" alt="Game1 screenshot 2">
-          <img src="assets/nftccaaa.png" alt="Game1 screenshot 3">
-          <div class="caption">Screenshot 1</div>
-        </div>
-
-        <div class="project-text">
-          <h3>Nightmares of the Creepy Cube</h3>
-          <p>
-            <strong>Nightmares of the Creepy Cube</strong> is a 2D stealth-survival game developed in Unity, 
-            where you play as a creepy cube escaping through a nightmare world while avoiding hostile robots.
-            I handled all programming, visual effects, and music, focusing on core gameplay, cosmetics, and early level design.
-          </p>
-          <a class="btn btn-primary" href="nftcc.html">Learn More</a>
-        </div>
-      </section>
-
-      <!-- Project 2 -->
-      <section class="project">
-        <div class="slideshow" data-index="1">
-          <img src="assets/tc01.jpg" alt="Game2 screenshot 1" class="active">
-          <img src="assets/tc02.PNG" alt="Game2 screenshot 2">
-          <img src="assets/tc03.PNG" alt="Game2 screenshot 3">
-        </div>
-
-        <div class="project-text">
-          <h3>Taxi Chaos</h3>
-          <p>
-            <strong>Taxi Chaos</strong> is a 3D linear open-world taxi simulator built in Unity, 
-            where you play as a driver navigating a low-poly city, picking up NPC passengers and dropping them off as quickly and safely as possible.
-            I designed and implemented the entire game system from scratch, handling core mechanics, AI traffic, mission logic, and rewards.
-          </p>
-          <a class="btn btn-primary" href="tc.html">Learn More</a>
-        </div>
-      </section>
-
-      <!-- Project 3 -->
-      <section class="project">
-        <div class="slideshow" data-index="2">
-          <img src="assets/eod01.jpg" alt="Game3 screenshot 1" class="active">
-          <img src="assets/eod02.PNG" alt="Game3 screenshot 2">
-          <img src="assets/eod03.PNG" alt="Game3 screenshot 2">
-        </div>
-
-        <div class="project-text">
-          <h3>EYES ON DUTY</h3>
-          <p><strong>Eyes on Duty</strong> is a mobile horror observation game developed in Unity,
-          inspired by the I'm on Observation Duty series. Players monitor cameras in a haunted restaurant,
-          identifying and reporting paranormal anomalies before they escalate. I developed all core systems and UI logic.
-          </p>
-          <a class="btn btn-primary" href="eod.html">Learn More</a>
-        </div>
-      </section>
-
-      <!-- Project 4 -->
-      <section class="project">
-        <div class="slideshow" data-index="3">
-          <img src="assets/gj01.PNG" alt="Game4 screenshot 1" class="active">
-          <img src="assets/gj02.PNG" alt="Game4 screenshot 2">
-        </div>
-
-        <div class="project-text">
-          <h3>GAME JAMS</h3>
-          <p>
-            I've joined several <strong>game jams</strong>, building small games under tight deadlines; some finished, 
-            some not. These fast-paced challenges taught me rapid prototyping, creative problem-solving, and time management.
-          </p>
-          <a class="btn btn-primary" href="gj.html">Learn More</a>
-        </div>
-      </section>
+    <!-- Section indicator dots -->
+    <div class="indicator" id="indicator">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
     </div>
 
-    <!-- indicator dots -->
-    <div class="indicator" id="indicator" aria-hidden="false">
-      <div class="dot active"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
-  </div>
+    <script>
+        /* ---------- Section scroll-snap navigation ---------- */
+        const sectionsWrapper = document.getElementById('sectionsWrapper');
+        const sections = Array.from(sectionsWrapper.querySelectorAll('.section'));
+        const headerLinks = document.querySelectorAll('header a[data-target]');
+        const dots = Array.from(document.querySelectorAll('.dot'));
+        let currentIndex = 0;
+        let isScrolling = false;
+        let scrollTimeout;
 
-  <script>
-    /* ---------- Navigation between Home / Projects ---------- */
-    const headerLinks = document.querySelectorAll('header a[data-target]');
-    const pages = document.querySelectorAll('.page');
-    const indicator = document.getElementById('indicator');
-
-    function showPage(id){
-      pages.forEach(p => {
-        if (p.id === id){
-          p.classList.add('active');
-          p.removeAttribute('aria-hidden');
-        } else {
-          p.classList.remove('active');
-          p.setAttribute('aria-hidden','true');
+        function updateDots(i) {
+            dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+            headerLinks.forEach((a, idx) => a.classList.toggle('active', idx === i));
         }
-      });
 
-      if (id === 'projects') {
-        indicator.classList.add('visible');
-        scrollToProject(currentIndex, true);
-      } else {
-        indicator.classList.remove('visible');
-      }
-    }
-
-    headerLinks.forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        e.preventDefault();
-        const target = a.dataset.target;
-        showPage(target);
-
-        if (target === "projects") {
-      scrollToProject(currentIndex, true);
-    }
-    });
-    });
-
-    /* ---------- Projects scrolling setup ---------- */
-    const projectsWrapper = document.getElementById('projectsWrapper');
-    const projectSections = Array.from(projectsWrapper.querySelectorAll('.project'));
-    const dots = Array.from(document.querySelectorAll('.dot'));
-    let currentIndex = 0;
-    let isScrolling = false;
-    let scrollTimeout;
-
-    function updateDots(i){
-      dots.forEach((d, idx)=> d.classList.toggle('active', idx === i));
-    }
-
-    function scrollToProject(i, instant=false){
-      if (i < 0) i = 0;
-      if (i >= projectSections.length) i = projectSections.length - 1;
-      currentIndex = i;
-      
-      const top = projectSections[i].offsetTop;
-      projectsWrapper.scrollTo({ top, behavior: instant ? 'auto' : 'smooth' });
-      updateDots(i);
-    }
-
-    projectsWrapper.addEventListener('wheel', (e)=>{
-      if (!document.getElementById('projects').classList.contains('active')) return;
-      e.preventDefault();
-      if (isScrolling) return;
-      const delta = e.deltaY;
-      if (Math.abs(delta) > 5) {
-        isScrolling = true;
-        if (delta > 0 && currentIndex < projectSections.length - 1){
-          scrollToProject(currentIndex + 1);
-        } else if (delta < 0 && currentIndex > 0){
-          scrollToProject(currentIndex - 1);
+        function goToSection(i, instant = false) {
+            if (i < 0) i = 0;
+            if (i >= sections.length) i = sections.length - 1;
+            currentIndex = i;
+            const top = sections[i].offsetTop;
+            sectionsWrapper.scrollTo({ top, behavior: instant ? 'auto' : 'smooth' });
+            updateDots(i);
         }
-        setTimeout(() => { isScrolling = false; }, 800);
-      }
-    }, { passive:false });
 
-    document.addEventListener('keydown', (e)=>{
-      if (!document.getElementById('projects').classList.contains('active')) return;
-      if (e.key === 'ArrowDown'){
-        e.preventDefault();
-        if (currentIndex < projectSections.length - 1){
-          scrollToProject(currentIndex + 1);
-        }
-      } else if (e.key === 'ArrowUp'){
-        e.preventDefault();
-        if (currentIndex > 0){
-          scrollToProject(currentIndex - 1);
-        }
-      }
-    });
-
-    let touchStartY = null;
-    let touchStartTime = null;
-    projectsWrapper.addEventListener('touchstart', (e)=> {
-      if (!document.getElementById('projects').classList.contains('active')) return;
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
-    }, {passive:true});
-    projectsWrapper.addEventListener('touchend', (e)=> {
-      if (touchStartY === null || isScrolling) return;
-      const endY = e.changedTouches[0].clientY;
-      const deltaY = touchStartY - endY;
-      const deltaTime = Date.now() - touchStartTime;
-      if (Math.abs(deltaY) > 50 && deltaTime < 300) {
-        isScrolling = true;
-        if (deltaY > 0 && currentIndex < projectSections.length-1) {
-          scrollToProject(currentIndex + 1);
-        } else if (deltaY < 0 && currentIndex > 0) {
-          scrollToProject(currentIndex - 1);
-        }
-        setTimeout(() => { isScrolling = false; }, 800);
-      }
-      touchStartY = null;
-      touchStartTime = null;
-    }, {passive:true});
-
-    projectsWrapper.addEventListener('scroll', ()=> {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(()=> {
-        let nearest = 0;
-        let nearestDist = Infinity;
-        projectSections.forEach((s, idx)=> {
-          const rect = s.getBoundingClientRect();
-          const dist = Math.abs(rect.top);
-          if (dist < nearestDist){ nearestDist = dist; nearest = idx; }
+        // Header nav clicks
+        headerLinks.forEach((a) => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const idx = sections.findIndex(s => s.id === a.dataset.target);
+                if (idx !== -1) goToSection(idx);
+            });
         });
-        if (nearest !== currentIndex) {
-          currentIndex = nearest;
-          updateDots(currentIndex);
-        }
-      }, 100);
-    });
 
-    dots.forEach((dot, idx)=> {
-      dot.addEventListener('click', ()=> {
-        if (!isScrolling) {
-          scrollToProject(idx);
-        }
-      });
-    });
+        // Dot clicks
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                if (!isScrolling) goToSection(idx);
+            });
+        });
 
-    const slideshows = Array.from(document.querySelectorAll('.slideshow'));
-    const slideshowState = [];
-    slideshows.forEach((box, i)=>{
-      const imgs = Array.from(box.querySelectorAll('img'));
-      slideshowState[i] = { imgs, current: 0, timer: null };
-      imgs.forEach((im, idx)=> im.classList.toggle('active', idx===0));
-      slideshowState[i].timer = setInterval(()=> {
-        const st = slideshowState[i];
-        st.imgs[st.current].classList.remove('active');
-        st.current = (st.current + 1) % st.imgs.length;
-        st.imgs[st.current].classList.add('active');
-      }, 4000);
-    });
+        // Wheel navigation — single scroll moves one section
+        sectionsWrapper.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (isScrolling) return;
 
-    showPage('intro');
+            const delta = e.deltaY;
+            if (Math.abs(delta) > 5) {
+                isScrolling = true;
+                if (delta > 0 && currentIndex < sections.length - 1) {
+                    goToSection(currentIndex + 1);
+                } else if (delta < 0 && currentIndex > 0) {
+                    goToSection(currentIndex - 1);
+                }
+                setTimeout(() => { isScrolling = false; }, 800);
+            }
+        }, { passive: false });
 
-    document.addEventListener('keydown', (e)=>{
-      if (e.key === 'Escape') showPage('intro');
-    });
+        // Arrow key navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (currentIndex < sections.length - 1) goToSection(currentIndex + 1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentIndex > 0) goToSection(currentIndex - 1);
+            }
+        });
 
-    window.addEventListener("load", () => {
-      if (location.hash === "#projects") {
-        showPage("projects");
-        scrollToProject(0, true);
-      }
-    });
+        // Touch swipe
+        let touchStartY = null;
+        let touchStartTime = null;
+        sectionsWrapper.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+        }, { passive: true });
 
-  </script>
+        sectionsWrapper.addEventListener('touchend', (e) => {
+            if (touchStartY === null || isScrolling) return;
+            const endY = e.changedTouches[0].clientY;
+            const deltaY = touchStartY - endY;
+            const deltaTime = Date.now() - touchStartTime;
+
+            if (Math.abs(deltaY) > 50 && deltaTime < 300) {
+                isScrolling = true;
+                if (deltaY > 0 && currentIndex < sections.length - 1) {
+                    goToSection(currentIndex + 1);
+                } else if (deltaY < 0 && currentIndex > 0) {
+                    goToSection(currentIndex - 1);
+                }
+                setTimeout(() => { isScrolling = false; }, 800);
+            }
+            touchStartY = null;
+            touchStartTime = null;
+        }, { passive: true });
+
+        // Track manual scroll position (e.g. inside About page overflow)
+        sectionsWrapper.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                let nearest = 0;
+                let nearestDist = Infinity;
+                sections.forEach((s, idx) => {
+                    const dist = Math.abs(s.getBoundingClientRect().top);
+                    if (dist < nearestDist) { nearestDist = dist; nearest = idx; }
+                });
+                if (nearest !== currentIndex) {
+                    currentIndex = nearest;
+                    updateDots(currentIndex);
+                }
+            }, 100);
+        });
+
+        // Initialize
+        goToSection(0, true);
+
+        // Support #hash on load / back-forward
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.substring(1);
+            const idx = sections.findIndex(s => s.id === hash);
+            if (idx !== -1) goToSection(idx, true);
+        });
+    </script>
 </body>
 </html>
-
