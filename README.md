@@ -1,2 +1,2 @@
 # rahuljetwani.io
-Rahul Jetwani's Portfolio 2025
+Rahul Jetwani's Portfolio Updated (Aug 2026)
