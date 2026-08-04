@@ -375,6 +375,21 @@
             .intro-card h1 {
                 font-size: 1.7rem
             }
+
+            /* On mobile we hand off to native video controls instead of the
+         custom overlay — more reliable across touch browsers */
+            .play-btn, .video-dim {
+                display: none
+            }
+
+            .video-panel, .banner-video {
+                cursor: default
+            }
+
+                .video-panel video, .banner-video video {
+                    object-fit: contain;
+                    background: #000
+                }
         }
     </style>
 </head>
@@ -467,31 +482,52 @@
     </div>
 
     <script>
-    function setupClickToPlay(panelId, videoId, playBtnId, dimId){
-      const panel = document.getElementById(panelId);
-      const video = document.getElementById(videoId);
-      const playBtn = document.getElementById(playBtnId);
-      const dim = document.getElementById(dimId);
-
-      function togglePlay(){
-        if (video.paused) {
-          video.play().catch(function(err){
-            console.error('Video play failed:', err);
-          });
-          playBtn.classList.add('hidden');
-          dim.classList.add('hidden');
-        } else {
-          video.pause();
-          playBtn.classList.remove('hidden');
-          dim.classList.remove('hidden');
+        function isMobileView() {
+            return window.matchMedia('(max-width: 900px)').matches;
         }
-      }
 
-      panel.addEventListener('click', togglePlay);
-    }
+        function setupClickToPlay(panelId, videoId, playBtnId, dimId) {
+            const panel = document.getElementById(panelId);
+            const video = document.getElementById(videoId);
+            const playBtn = document.getElementById(playBtnId);
+            const dim = document.getElementById(dimId);
 
-    setupClickToPlay('videoPanel1', 'video1', 'playBtn1', 'dim1');
-    setupClickToPlay('videoPanel2', 'video2', 'playBtn2', 'dim2');
+            function togglePlay() {
+                // On mobile, native controls handle play/pause — don't double-toggle
+                if (isMobileView()) return;
+
+                if (video.paused) {
+                    video.play().catch(function (err) {
+                        console.error('Video play failed:', err);
+                    });
+                    playBtn.classList.add('hidden');
+                    dim.classList.add('hidden');
+                } else {
+                    video.pause();
+                    playBtn.classList.remove('hidden');
+                    dim.classList.remove('hidden');
+                }
+            }
+
+            panel.addEventListener('click', togglePlay);
+
+            // Keep native controls in sync with viewport size
+            function syncControls() {
+                if (isMobileView()) {
+                    video.setAttribute('controls', '');
+                } else {
+                    video.removeAttribute('controls');
+                    // reset overlay state when switching back to desktop
+                    playBtn.classList.remove('hidden');
+                    dim.classList.remove('hidden');
+                }
+            }
+            syncControls();
+            window.addEventListener('resize', syncControls);
+        }
+
+        setupClickToPlay('videoPanel1', 'video1', 'playBtn1', 'dim1');
+        setupClickToPlay('videoPanel2', 'video2', 'playBtn2', 'dim2');
     </script>
 </body>
 </html>

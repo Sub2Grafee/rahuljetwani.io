@@ -467,19 +467,72 @@
                 transform: scale(1.2)
             }
 
-        /* Responsive */
+        /* =========================================================
+           MOBILE ONLY — desktop styles above are untouched.
+           Projects area becomes 3 equal-size, centered buttons.
+           ========================================================= */
         @media (max-width:900px) {
+
+            /* Projects: equal, centered, compact buttons instead of
+               tall background-image bento cards, so the section
+               actually fits a phone screen without overflow. */
             .bento-grid {
                 grid-template-columns: 1fr;
                 grid-template-rows: none;
-                gap: 1rem;
-                height: auto
+                gap: .9rem;
+                height: auto;
+                max-width: 380px;
+                margin: 0 auto;
+                justify-items: stretch;
             }
 
-            .bento-card.big, .bento-card.small-a, .bento-card.small-b {
+            .bento-card.big,
+            .bento-card.small-a,
+            .bento-card.small-b {
                 grid-column: 1;
                 grid-row: auto;
-                min-height: 260px
+                min-height: unset;
+                height: 76px;
+                background-image: none !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+
+            /* Drop the image-darkening overlay and floating arrow —
+               these were built for photo cards, not flat buttons */
+            .bento-card:before {
+                display: none;
+            }
+
+            .bento-arrow {
+                display: none;
+            }
+
+            .bento-content {
+                position: static;
+                padding: 0 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .bento-tags {
+                justify-content: center;
+                margin-bottom: .4rem;
+            }
+
+            .bento-content h3,
+            .bento-card.big .bento-content h3 {
+                font-size: 1.05rem;
+                margin-bottom: 0;
+            }
+
+            .bento-content p {
+                display: none;
             }
 
             .about-section {
@@ -590,7 +643,7 @@
                     <img src="assets/new5.jpg" alt="Rahul Jetwani" class="profile-photo">
                     <h1>Rahul Jetwani</h1>
                     <p class="about-line">
-                        Building interactive worlds through code, real-time graphics, and simulation. games as more than entertainment - 
+                        Building interactive worlds through code, real-time graphics, and simulation. games as more than entertainment -
                         they're a way for people to explore, create, and experience something different. Always learning. Always building. Always chasing the next challenge.
                     </p>
                     <div class="email-display">📧 rahuljetwani777@gmail.com</div>
